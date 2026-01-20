@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FarmConnect - Cultivated with Care</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -13,6 +13,7 @@
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
               poppins: ['Poppins', 'sans-serif'],
+              serif: ['Lora', 'serif'],
             },
             colors: {
               primary: {
@@ -34,6 +35,12 @@
                 300: '#d6d3d1',
                 800: '#292524',
                 900: '#1c1917',
+              },
+              olive: {
+                50: '#f7fee7',
+                100: '#ecfccb',
+                800: '#365314',
+                900: '#1a2e05',
               },
               lime: {
                 300: '#bef264',
@@ -62,7 +69,7 @@
     <style>
       body { 
         font-family: 'Inter', sans-serif; 
-        background-color: #fafaf9; /* Stone-50 */
+        background-color: #f7f6f4; /* Slightly warmer stone */
         color: #1c1917;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -75,9 +82,21 @@
           scrollbar-width: none;
       }
     </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@lottiefiles/dotlottie-react": "https://esm.sh/@lottiefiles/dotlottie-react@0.3.1?external=react,react-dom"
+  }
+}
+</script>
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
