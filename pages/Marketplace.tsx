@@ -1,0 +1,127 @@
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Search, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { ProductCard } from '../components/ProductCard';
+import { Button } from '../components/Button';
+import { CATEGORIES } from '../constants'; // No longer importing PRODUCTS from constants
+import { useStore } from '../App';
+
+export const Marketplace: React.FC = () => {
+  const { addToCart, state } = useStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'newest'>('newest');
+
+  // Sync with URL params
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && CATEGORIES.includes(cat)) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
+
+  const filteredProducts = useMemo(() => {
+    // USE state.products HERE
+    return state.products.filter(product => {
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    }).sort((a, b) => {
+      if (sortBy === 'price-asc') return a.price - b.price;
+      if (sortBy === 'price-desc') return b.price - a.price;
+      return new Date(b.harvestDate).getTime() - new Date(a.harvestDate).getTime();
+    });
+  }, [searchTerm, selectedCategory, sortBy, state.products]);
+
+  const handleCategoryClick = (cat: string) => {
+    setSelectedCategory(cat);
+    setSearchParams(cat === 'All' ? {} : { category: cat });
+  };
+
+  return (
+    <div className="min-h-screen pt-32 pb-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Editorial Header */}
+        <div className="mb-12 text-center">
+          <span className="text-sm font-bold uppercase tracking-widest text-stone-500">The Collection</span>
+          <h1 className="mt-2 text-5xl font-black tracking-tight text-stone-900 sm:text-6xl uppercase">Marketplace</h1>
+        </div>
+        
+        {/* Controls Container - Sticky */}
+        <div className="sticky top-24 z-40 mb-10 rounded-3xl bg-white/80 p-4 shadow-soft backdrop-blur-md ring-1 ring-stone-900/5">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {/* Search */}
+            <div className="relative w-full max-w-md">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                <Search className="h-5 w-5 text-stone-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search fresh produce..."
+                className="block w-full rounded-full border-0 bg-stone-100 py-3 pl-11 pr-4 text-stone-900 placeholder:text-stone-500 focus:ring-2 focus:ring-inset focus:ring-stone-900 sm:text-sm sm:leading-6"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            {/* Sort */}
+            <div className="flex items-center gap-2">
+               <div className="relative">
+                 <select 
+                   className="appearance-none rounded-full bg-stone-100 py-3 pl-6 pr-10 text-sm font-bold text-stone-900 focus:ring-2 focus:ring-stone-900 cursor-pointer"
+                   value={sortBy}
+                   onChange={(e) => setSortBy(e.target.value as any)}
+                 >
+                   <option value="newest">Fresh Arrivals</option>
+                   <option value="price-asc">Price: Low to High</option>
+                   <option value="price-desc">Price: High to Low</option>
+                 </select>
+                 <ArrowUpDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
+               </div>
+            </div>
+          </div>
+
+          {/* Categories */}
+          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat}
+                onClick={() => handleCategoryClick(cat)}
+                className={`whitespace-nowrap rounded-full px-6 py-2.5 text-sm font-bold transition-all ${
+                  selectedCategory === cat 
+                    ? 'bg-stone-900 text-white shadow-lg' 
+                    : 'bg-white text-stone-500 hover:bg-stone-100 ring-1 ring-stone-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map(product => (
+              <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
+            ))
+          ) : (
+            <div className="col-span-full py-32 text-center">
+              <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-stone-100">
+                <Search className="h-10 w-10 text-stone-300" />
+              </div>
+              <h3 className="text-2xl font-bold text-stone-900">No products found</h3>
+              <p className="mt-2 text-stone-500">We couldn't find what you're looking for.</p>
+              <Button variant="outline" className="mt-8" onClick={() => {
+                setSearchTerm('');
+                setSelectedCategory('All');
+              }}>Clear all filters</Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
