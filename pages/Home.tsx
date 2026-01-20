@@ -111,7 +111,7 @@ export const Home: React.FC = () => {
             {/* Image Aspect ratio adjusted for Mobile (4/3) vs Desktop (2.35/1) */}
             <div className="relative mx-auto max-w-6xl aspect-[4/3] sm:aspect-[16/9] md:aspect-[2.35/1] rounded-[2.5rem] overflow-hidden shadow-2xl group cursor-default">
                <img 
-                 src="https://images.unsplash.com/photo-1625246333195-58f214f76326?q=80&w=2574&auto=format&fit=crop" 
+                 src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=2672&auto=format&fit=crop" 
                  alt="Farmer in wheat field" 
                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
                />
