@@ -1,87 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FarmConnect - Cultivated with Care</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-              poppins: ['Poppins', 'sans-serif'],
-              serif: ['Lora', 'serif'],
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FarmConnect - Cultivated with Care</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            serif: ['Lora', 'serif'],
+          },
+          colors: {
+            primary: {
+              50: '#f2f9f6',
+              100: '#e0f1eb',
+              200: '#c3e2d7',
+              300: '#98cbbd',
+              400: '#67ad9d',
+              500: '#469181',
+              600: '#347568',
+              700: '#2c5e54',
+              800: '#264c45',
+              900: '#21403b',
             },
-            colors: {
-              primary: {
-                50: '#f2f9f6',
-                100: '#e0f1eb',
-                200: '#c3e2d7',
-                300: '#98cbbd',
-                400: '#67ad9d',
-                500: '#469181',
-                600: '#347568',
-                700: '#2c5e54',
-                800: '#264c45',
-                900: '#21403b',
-              },
-              stone: {
-                50: '#fafaf9',
-                100: '#f5f5f4',
-                200: '#e7e5e4',
-                300: '#d6d3d1',
-                800: '#292524',
-                900: '#1c1917',
-              },
-              olive: {
-                50: '#f7fee7',
-                100: '#ecfccb',
-                800: '#365314',
-                900: '#1a2e05',
-              },
-              lime: {
-                300: '#bef264',
-                400: '#a3e635',
-                500: '#84cc16',
-                900: '#365314',
-              }
+            stone: {
+              50: '#fafaf9',
+              100: '#f5f5f4',
+              200: '#e7e5e4',
+              300: '#d6d3d1',
+              800: '#292524',
+              900: '#1c1917',
             },
-            boxShadow: {
-              'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-              'hover': '0 10px 25px -5px rgba(0, 0, 0, 0.08)',
+            olive: {
+              50: '#f7fee7',
+              100: '#ecfccb',
+              800: '#365314',
+              900: '#1a2e05',
             },
-            animation: {
-              'float': 'float 6s ease-in-out infinite',
-            },
-            keyframes: {
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              }
+            lime: {
+              300: '#bef264',
+              400: '#a3e635',
+              500: '#84cc16',
+              900: '#365314',
+            }
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'hover': '0 10px 25px -5px rgba(0, 0, 0, 0.08)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
             }
           }
         }
       }
-    </script>
-    <style>
-      body { 
-        font-family: 'Inter', sans-serif; 
-        background-color: #f7f6f4; /* Slightly warmer stone */
-        color: #1c1917;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-      .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-      }
-    </style>
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f7f6f4;
+      /* Slightly warmer stone */
+      color: #1c1917;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -91,12 +97,15 @@
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react-dom": "https://esm.sh/react-dom@^19.2.3",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "@lottiefiles/dotlottie-react": "https://esm.sh/@lottiefiles/dotlottie-react@0.3.1?external=react,react-dom"
+    "@lottiefiles/dotlottie-react": "https://esm.sh/@lottiefiles/dotlottie-react@0.13.0?external=react,react-dom"
   }
 }
 </script>
 </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>

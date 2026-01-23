@@ -1,30 +1,45 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { ArrowUpRight, DollarSign, Package, AlertTriangle, TrendingUp, Plus } from 'lucide-react';
 import { Button } from '../../components/Button';
-import { useStore } from '../../App';
 
 export const FarmerDashboard: React.FC = () => {
-  const { state } = useStore();
-  
-  // Mock calculations based on global state
-  const totalRevenue = state.orders.reduce((acc, order) => acc + order.total, 12500); // 12500 start
-  const activeOrders = state.orders.filter(o => o.status !== 'Delivered').length + 5;
-  const lowStockItems = state.products.filter(p => p.stock < 20).length;
+  // Fetch data from Convex
+  const products = useQuery(api.products.list, {}) ?? [];
+  const orders = useQuery(api.orders.list) ?? [];
+
+  // Calculate stats from Convex data
+  const totalRevenue = orders.reduce((acc, order) => acc + order.total, 0) + 12500; // Base revenue
+  const activeOrders = orders.filter(o => o.status !== 'Delivered').length;
+  const lowStockItems = products.filter(p => p.stock < 20).length;
+
+  // Loading state
+  if (products === undefined || orders === undefined) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 bg-stone-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-stone-200 border-t-stone-900 mx-auto"></div>
+          <p className="mt-4 text-stone-500">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-stone-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-stone-500">Admin Panel</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-stone-500">Farmer Dashboard</span>
             <h1 className="mt-1 text-4xl font-black text-stone-900 uppercase">Dashboard</h1>
             <p className="mt-2 text-stone-500">Welcome back, Green Valley Organics.</p>
           </div>
           <div className="flex gap-4">
-            <Link to="/dashboard/add">
+            <Link to="/farmer/add">
               <Button variant="lime" className="gap-2">
                 <Plus className="h-5 w-5" /> Add Produce
               </Button>
@@ -54,7 +69,7 @@ export const FarmerDashboard: React.FC = () => {
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
                 <Package className="h-6 w-6" />
               </div>
-              <Link to="/dashboard/orders" className="text-sm font-bold text-stone-400 hover:text-stone-900">View All</Link>
+              <Link to="/farmer/orders" className="text-sm font-bold text-stone-400 hover:text-stone-900">View All</Link>
             </div>
             <div className="mt-4">
               <p className="text-sm font-medium text-stone-500">Active Orders</p>
@@ -78,27 +93,27 @@ export const FarmerDashboard: React.FC = () => {
 
         {/* Quick Links Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-           <Link to="/dashboard/analytics" className="group relative overflow-hidden rounded-3xl bg-stone-900 p-8 text-white transition-all hover:bg-stone-800">
-             <div className="relative z-10">
-                <h3 className="text-2xl font-bold">Analytics & Reports</h3>
-                <p className="mt-2 text-stone-400 max-w-xs">Deep dive into your weekly performance and customer trends.</p>
-                <div className="mt-8 flex items-center gap-2 font-bold text-lime-400">
-                   View Reports <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </div>
-             </div>
-             {/* Decorative blob */}
-             <div className="absolute -right-10 -bottom-10 h-64 w-64 rounded-full bg-stone-800/50 blur-3xl group-hover:bg-lime-900/20 transition-colors"></div>
-           </Link>
+          <Link to="/farmer/analytics" className="group relative overflow-hidden rounded-3xl bg-stone-900 p-8 text-white transition-all hover:bg-stone-800">
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold">Analytics & Reports</h3>
+              <p className="mt-2 text-stone-400 max-w-xs">Deep dive into your weekly performance and customer trends.</p>
+              <div className="mt-8 flex items-center gap-2 font-bold text-lime-400">
+                View Reports <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </div>
+            </div>
+            {/* Decorative blob */}
+            <div className="absolute -right-10 -bottom-10 h-64 w-64 rounded-full bg-stone-800/50 blur-3xl group-hover:bg-lime-900/20 transition-colors"></div>
+          </Link>
 
-           <Link to="/dashboard/orders" className="group relative overflow-hidden rounded-3xl bg-white p-8 ring-1 ring-stone-200 transition-all hover:ring-stone-300">
-             <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-stone-900">Manage Orders</h3>
-                <p className="mt-2 text-stone-500 max-w-xs">Track, ship, and update status for your 24 pending deliveries.</p>
-                <div className="mt-8 flex items-center gap-2 font-bold text-stone-900">
-                   Go to Orders <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </div>
-             </div>
-           </Link>
+          <Link to="/farmer/orders" className="group relative overflow-hidden rounded-3xl bg-white p-8 ring-1 ring-stone-200 transition-all hover:ring-stone-300">
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold text-stone-900">Manage Orders</h3>
+              <p className="mt-2 text-stone-500 max-w-xs">Track, ship, and update status for your {activeOrders} pending deliveries.</p>
+              <div className="mt-8 flex items-center gap-2 font-bold text-stone-900">
+                Go to Orders <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </div>
+            </div>
+          </Link>
         </div>
 
       </div>
