@@ -81,3 +81,13 @@ export const updateStock = mutation({
         await ctx.db.patch(args.id, { stock: args.stock });
     },
 });
+
+// Delete supply (Admin only)
+export const remove = mutation({
+    args: {
+        id: v.id("supplies"),
+    },
+    handler: async (ctx, args) => {
+        await ctx.db.delete(args.id);
+    },
+});

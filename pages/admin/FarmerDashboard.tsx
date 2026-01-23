@@ -10,10 +10,12 @@ export const FarmerDashboard: React.FC = () => {
   const products = useQuery(api.products.list, {}) ?? [];
   const orders = useQuery(api.orders.list) ?? [];
 
-  // Calculate stats from Convex data
-  const totalRevenue = orders.reduce((acc, order) => acc + order.total, 0) + 12500; // Base revenue
+  // Calculate stats from Convex data - Revenue in RWF
+  const totalRevenueRWF = orders.reduce((acc, order) => acc + (order.total * 1300), 0);
   const activeOrders = orders.filter(o => o.status !== 'Delivered').length;
   const lowStockItems = products.filter(p => p.stock < 20).length;
+  const totalOrders = orders.length;
+  const deliveredOrders = orders.filter(o => o.status === 'Delivered').length;
 
   // Loading state
   if (products === undefined || orders === undefined) {
@@ -60,7 +62,7 @@ export const FarmerDashboard: React.FC = () => {
             </div>
             <div className="mt-4">
               <p className="text-sm font-medium text-stone-500">Total Revenue</p>
-              <h3 className="text-3xl font-bold text-stone-900">${totalRevenue.toLocaleString()}</h3>
+              <h3 className="text-3xl font-bold text-stone-900">RWF {totalRevenueRWF.toLocaleString()}</h3>
             </div>
           </div>
 
