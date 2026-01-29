@@ -53,17 +53,52 @@ export const AddProduct: React.FC = () => {
         return;
       }
 
+      // Validate required fields
+      if (!formData.name.trim()) {
+        alert('Please enter a product name');
+        setLoading(false);
+        return;
+      }
+
+      if (!formData.description.trim()) {
+        alert('Please enter a product description');
+        setLoading(false);
+        return;
+      }
+
+      // Validate and parse price
+      const price = parseFloat(formData.price);
+      if (isNaN(price) || price <= 0) {
+        alert('Please enter a valid price greater than 0');
+        setLoading(false);
+        return;
+      }
+
+      // Validate and parse stock
+      const stock = parseInt(formData.stock);
+      if (isNaN(stock) || stock < 0) {
+        alert('Please enter a valid stock quantity (0 or more)');
+        setLoading(false);
+        return;
+      }
+
+      if (!formData.unit.trim()) {
+        alert('Please enter a unit (e.g., kg, bunch, box)');
+        setLoading(false);
+        return;
+      }
+
       // Use a default image if none uploaded
       const imageUrl = formData.imageUrl || 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&q=80';
 
       await addProduct({
         farmerId,
-        name: formData.name,
-        description: formData.description,
-        category: formData.category as any,
-        price: parseFloat(formData.price),
-        unit: formData.unit,
-        stock: parseInt(formData.stock),
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        category: formData.category as "Vegetables" | "Fruits" | "Dairy" | "Honey" | "Herbs" | "Grains",
+        price,
+        unit: formData.unit.trim(),
+        stock,
         isOrganic: formData.isOrganic,
         harvestDate: formData.harvestDate || new Date().toISOString().split('T')[0],
         imageUrl,
@@ -71,9 +106,11 @@ export const AddProduct: React.FC = () => {
         reviewsCount: 0
       });
 
+      alert('Product added successfully!');
       navigate('/marketplace');
     } catch (error) {
       console.error('Error adding product:', error);
+      alert('Failed to add product: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setLoading(false);
     }
