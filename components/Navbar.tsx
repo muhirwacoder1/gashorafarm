@@ -42,7 +42,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed top-4 sm:top-6 left-0 right-0 z-50 flex justify-center items-center gap-3 px-4 pointer-events-none">
-      <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 rounded-full bg-white/95 p-1.5 sm:p-2 shadow-lg backdrop-blur-md ring-1 ring-stone-900/5 max-w-full overflow-x-auto no-scrollbar">
+      <div className="pointer-events-auto flex items-center gap-1 sm:gap-2 rounded-full bg-white/95 p-1.5 sm:p-2 shadow-lg backdrop-blur-md ring-1 ring-stone-900/5 max-w-full overflow-visible no-scrollbar">
 
 
         {/* Home Icon - ONLY for Regular Users (not farmers) */}
@@ -165,7 +165,7 @@ export const Navbar: React.FC = () => {
 
             {/* Dropdown Menu */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white shadow-xl ring-1 ring-stone-900/10 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-white shadow-xl ring-1 ring-stone-900/10 py-2 z-[9999]" style={{ minHeight: 'auto' }}>
                 {isAuthenticated ? (
                   <>
                     <div className="px-4 py-3 border-b border-stone-100">

@@ -5,7 +5,7 @@ import { api } from '../convex/_generated/api';
 import { Id } from '../convex/_generated/dataModel';
 import { Badge } from '../components/Badge';
 import { Button } from '../components/Button';
-import { MapPin, Star, Calendar, ArrowLeft, Minus, Plus } from 'lucide-react';
+import { MapPin, Star, Calendar, ArrowLeft, Minus, Plus, Phone } from 'lucide-react';
 import { useStore } from '../App';
 
 export const ProductDetails: React.FC = () => {
@@ -122,6 +122,17 @@ export const ProductDetails: React.FC = () => {
                     <Calendar className="h-4 w-4 text-stone-400" />
                     <span>Harvested {product.harvestDate}</span>
                   </div>
+                  {farmer?.phone && (
+                    <div className="flex items-center gap-3 text-sm text-stone-600">
+                      <Phone className="h-4 w-4 text-stone-400" />
+                      <a
+                        href={`tel:${farmer.phone}`}
+                        className="text-lime-600 hover:text-lime-700 font-medium hover:underline"
+                      >
+                        {farmer.phone}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
 
